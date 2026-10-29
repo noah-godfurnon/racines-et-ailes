@@ -47,7 +47,8 @@ a{color:var(--gold)}
 
 /* ---------- en-tête ---------- */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(61,10,23,.96);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;gap:18px;min-height:76px}
+.top .wrap{display:flex;align-items:center;gap:12px;min-height:76px}
+.top .menu{margin-left:auto}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;flex:none}
 .brand img{height:40px;width:auto}
 .brand span{font-family:var(--serif);font-size:15px;letter-spacing:.24em;color:var(--blush);white-space:nowrap}
@@ -65,7 +66,8 @@ nav.main a[aria-current="page"]{color:var(--gold);border-bottom-color:var(--gold
   .menu{display:inline-block}
 }
 @media (max-width:1380px){.brand span{display:none}}
-@media (max-width:520px){.brand span{display:none}.exit small{display:none}}
+@media (max-width:760px){.exit small{display:none}}
+@media (max-width:560px){.brand span{display:none}.exit .long{display:none}.brand img{height:34px}}
 
 /* ---------- pages ---------- */
 .page[hidden]{display:none!important}
@@ -190,7 +192,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:20px
       <a href="#partenaires">Partenaires</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="exit" id="exitBtn" title="Affiche immédiatement une page neutre (raccourci : Échap deux fois)">✕ Quitter rapidement <small>· Échap ×2</small></button>
+    <button class="exit" id="exitBtn" title="Affiche immédiatement une page neutre (raccourci : Échap deux fois)">✕ Quitter<span class="long"> rapidement</span> <small>· Échap ×2</small></button>
   </div>
 </header>
 
