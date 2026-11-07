@@ -192,7 +192,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:20px
       <a href="#partenaires">Partenaires</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="exit" id="exitBtn" title="Affiche immédiatement une page neutre (raccourci : Échap deux fois)">✕ Quitter<span class="long"> rapidement</span> <small>· Échap ×2</small></button>
+    <button class="exit" id="exitBtn" title="Quitte immédiatement le site pour une page de recettes (raccourci : Échap deux fois)">✕ Quitter<span class="long"> rapidement</span> <small>· Échap ×2</small></button>
   </div>
 </header>
 
@@ -465,7 +465,7 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:20px
         <div class="card"><div class="eyebrow">Nous joindre</div>
           <ul class="list"><li>Téléphone : <span class="todo">numéro relais à compléter</span></li><li>E-mail : <span class="todo">à compléter</span></li><li>Permanence : <span class="todo">adresse et horaires à compléter</span></li><li>Facebook, Instagram, LinkedIn, TikTok : Racines &amp; Ailes</li></ul></div>
         <div class="card alt"><div class="eyebrow">Naviguer en sécurité</div>
-          <ul class="list"><li>Le bouton « Quitter rapidement » affiche une page neutre. Raccourci : Échap deux fois.</li><li>Utilisez la navigation privée.</li><li>Effacez l'historique si l'appareil est partagé.</li></ul></div>
+          <ul class="list"><li>Le bouton « Quitter rapidement », en haut de chaque page, remplace tout de suite le site par une page de recettes de cuisine. Sur ordinateur : Échap deux fois.</li><li>Le bouton « retour » ne ramène pas sur notre site.</li><li>Le plus sûr : ouvrez ce site en navigation privée. Sur téléphone, dans Safari ou Chrome, appuyez sur l'icône des onglets puis « Privé » ou « Nouvel onglet de navigation privée ». Rien ne reste dans l'historique.</li><li>Sinon, effacez l'historique après votre visite (réglages du navigateur, « Effacer l'historique »), surtout si le téléphone ou l'ordinateur est partagé.</li><li>Ce site ne dépose aucun cookie de suivi.</li></ul></div>
       </div>
     </div>
   </section>
@@ -484,12 +484,12 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:20px
 
 <div id="neutral" hidden>
   <div class="box">
-    <h2>Météo · Wavre</h2>
-    <p style="color:#5a6776">Prévisions pour les prochains jours</p>
-    <div class="row"><span>Aujourd'hui</span><span>Nuageux · 11°</span></div>
-    <div class="row"><span>Demain</span><span>Éclaircies · 13°</span></div>
-    <div class="row"><span>Après-demain</span><span>Averses · 10°</span></div>
-    <p style="font-size:14px;color:#5a6776">Prévisions détaillées sur <a href="https://www.meteo.be/fr/belgique" target="_blank" rel="noopener">meteo.be</a></p>
+    <h2>Recettes faciles</h2>
+    <p style="color:#5a6776">Idées pour la semaine</p>
+    <div class="row"><span>Soupe de potiron</span><span>30 min</span></div>
+    <div class="row"><span>Gratin de pâtes</span><span>40 min</span></div>
+    <div class="row"><span>Tarte aux pommes</span><span>50 min</span></div>
+    <p style="font-size:14px;color:#5a6776">Plus de recettes sur <a href="https://www.marmiton.org/">marmiton.org</a></p>
   </div>
 </div>
 
@@ -506,12 +506,20 @@ footer .legal{grid-column:1/-1;border-top:1px solid var(--line);padding-top:20px
     window.scrollTo(0,0);
   }
   window.addEventListener('hashchange',show); show();
+  // Les liens internes remplacent l'entrée d'historique au lieu d'en ajouter une :
+  // le site n'occupe qu'une seule entrée, que « Quitter rapidement » remplace ensuite.
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return;
+    var h=a.getAttribute('href').slice(1); if(names.indexOf(h)<0) return;
+    e.preventDefault(); try{history.replaceState(null,'','#'+h);}catch(err){location.replace('#'+h);} show();
+  });
 
   // ---------- Quitter rapidement ----------
   var site=document.getElementById('site'), neutral=document.getElementById('neutral');
-  function quit(){ site.hidden=true; neutral.hidden=false; document.title='Météo · Wavre';
-    try{history.replaceState(null,'',location.pathname);}catch(e){}
-    try{window.open('https://www.meteo.be/fr/belgique','_blank','noopener');}catch(e){} }
+  // Masque le site tout de suite, puis remplace la page par un site de recettes :
+  // le bouton « retour » ne ramène pas au site.
+  function quit(){ site.hidden=true; neutral.hidden=false; document.title='Recettes faciles';
+    location.replace('https://www.marmiton.org/'); }
   document.getElementById('exitBtn').addEventListener('click',quit);
   var last=0; document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ var t=Date.now(); if(t-last<900) quit(); last=t; } });
 
